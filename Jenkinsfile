@@ -9,7 +9,8 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: "${env.BRANCH_NAME}", url: 'https://github.com/Chandraleka123/infrapipeline.git'
+        git branch: "${env.BRANCH_NAME}", url: 'https://github.com/Chandraleka123/infrapipeline.git',
+        credentialsId: 'github-creds'
       }
     }
 
