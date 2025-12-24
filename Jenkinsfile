@@ -1,15 +1,22 @@
 pipeline {
   agent any
 
+  options {
+    skipDefaultCheckout(true)
+  }
+
   environment {
     ENV = "${env.BRANCH_NAME}"
     TF_WORKDIR = "environments/${env.BRANCH_NAME}"
   }
 
   stages {
+
     stage('Checkout') {
       steps {
-        git branch: "${env.BRANCH_NAME}", url: 'https://github.com/Chandraleka123/infrapipeline.git'
+        git branch: "${env.BRANCH_NAME}",
+            url: 'https://github.com/Chandraleka123/infrapipeline.git',
+            credentialsId: 'git-credes'
       }
     }
 
@@ -17,6 +24,14 @@ pipeline {
       steps {
         dir("${TF_WORKDIR}") {
           sh 'terraform init'
+        }
+      }
+    }
+
+    stage('Terraform Validate') {
+      steps {
+        dir("${TF_WORKDIR}") {
+          sh 'terraform validate'
         }
       }
     }
@@ -32,13 +47,9 @@ pipeline {
     }
 
     stage('Approval') {
-      /*
-      when {
-        expression { env.BRANCH_NAME == 'production' }
-      }
-      */
+    
       steps {
-        input message: "Approvee the deployment to production?", ok: 'Deploy'
+        input message: "Approve deployment to production?", ok: 'Deploy'
       }
     }
 
