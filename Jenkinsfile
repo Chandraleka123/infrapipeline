@@ -49,7 +49,8 @@ pipeline {
     stage('Approval') {
     
       steps {
-        input message: "Approve deployment to production?", ok: 'Deploy'
+        input message: "Approve deployment to ${env.ENV}?", ok: 'Deploy'
+
       }
     }
 
