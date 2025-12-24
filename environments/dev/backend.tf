@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "myterra-chandra-s3-leka"
+    bucket = "chandra-southeast-bucket-terra"
     key    = "environments/dev/terraform.tfstate"
     region = "ap-southeast-1"
   }
